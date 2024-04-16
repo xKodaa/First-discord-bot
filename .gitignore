@@ -1,0 +1,8 @@
+# root folder
+node_modules
+package-lock.json
+package.json
+.eslintrc.json
+
+# data folder
+config.json
