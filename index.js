@@ -16,6 +16,7 @@ const mainChannelId = config.mainChannelId;
 const validRoles = ["Extra sráči", "Největší sráč"];
 const ideasFile = "data/ideas.json";
 const guessGameFile = "data/guessGame.json";
+const answersFile = "data/answers.json";
 const commands = com.commands;
 var actualChannel, user, userRole, roleNames, userHighestRole;
 
@@ -57,7 +58,6 @@ bot.on("messageCreate", message => {
 function handleMessage(commandName, message, messageContent) {
     const command = Object.values(commands).find(cmd => cmd.name == commandName);
     if (command) {
-        utils.log(`Command '${commandName}' nalezen`);
         switch (command) {
             case commands.AHOJ:
                 sayHello(message); 
@@ -255,22 +255,10 @@ async function saveIdea(message, messageContent) {
     }
 }
 
-function sendRandomAnswer(message) {
-    let randomAnswers = [
-        "Dnes je tvůj šťastný den!",
-        "Zkus to znovu později.",
-        "Vyhul pele",
-        "Seš pizda",
-        "Sokeres čaje chas kar",
-        "Jebu ti bábu",
-        "Prej mi máš poslat prachy jsem slyšel",
-        "Vyhul mi ptakoještěra",
-        "Nehrej lolko",
-        "Možná bych ti měl říct, že seš teplej",
-        "Možná... tě ojebu?",
-        "Bez komentáře.",
-        "Aby tě jeblo",
-    ];
+async function sendRandomAnswer(message) {
+    const data = await readFile(answersFile, 'utf8'); 
+    const json = JSON.parse(data); 
+    const randomAnswers = json.answers; 
     let randomAnswer = randomAnswers[Math.floor(Math.random() * randomAnswers.length)];
     message.reply(randomAnswer);
 }
